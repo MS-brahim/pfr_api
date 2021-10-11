@@ -3,7 +3,7 @@ const ServiceModel = require('../models/Service.model');
 // FIND ALL SERVICES 
 const findAllServices = async (req, res) => {
     try {
-        const services = await ServiceModel.find();
+        const services = await ServiceModel.find().populate('user_id');
         res.send({
             success:true,
             message:'find all services !SUCCESS',
@@ -17,7 +17,7 @@ const findAllServices = async (req, res) => {
 // FIND SERVICE BY ID 
 const findServiceById = async (req, res) => {
     try {
-        const service = await ServiceModel.findById({_id:req.params.id});
+        const service = await ServiceModel.findById({_id:req.params.id}).populate('user_id');
         res.status(200).send({
             success: true,
             message: 'find service by id successFully',
