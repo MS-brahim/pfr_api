@@ -3,7 +3,7 @@ require('dotenv').config();
 
 function connect(){
     return new Promise((resolve,reject) => {
-        mongoose.connect(process.env.DB_CONNECT_LOCAL,{useNewUrlParser : true,useCreateIndex : true,useUnifiedTopology: true})
+        mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser : true,useCreateIndex : true,useUnifiedTopology: true})
         .then((res,err) => {
             if(err) return reject(err);
             resolve();
