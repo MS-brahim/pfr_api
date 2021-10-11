@@ -26,4 +26,4 @@ db.connect()
             console.log('run server port http://localhost:'+PORT);
         });
     });
-db.close()
+// db.close()
