@@ -1,13 +1,14 @@
 const categoryController = require('../controllers/category.controller');
 const verifyToken = require('../middleware/verifyToken');
 const router = require('express').Router();
+const { upload} = require('../middleware/upload');
 
 router.route('/').get(
     verifyToken, 
     categoryController.findAllCategories
 );
 router.route('/post').post(
-    categoryController.createCategory
+    upload.single('image'), categoryController.createCategory
 );
 router.route('/:id').get(
     categoryController.findCategoryById

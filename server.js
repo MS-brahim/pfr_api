@@ -6,6 +6,8 @@ const db = require('./api/config/db');
 const PORT = process.env.PORT || 8080
 
 server.use(express.json());
+// uploads images 
+server.use(express.static('uploads'));
 
 // PUBLIC API 
 server.use(cors())

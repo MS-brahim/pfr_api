@@ -33,7 +33,7 @@ const createCategory = async (req, res) => {
 
     const bodyCategory = new CategoryModel({
         name   : req.body.name,
-        image  : req.body.image,
+        image  : req.file.path,
     });
 
     try {
