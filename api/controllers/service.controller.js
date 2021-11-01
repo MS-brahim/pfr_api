@@ -3,11 +3,12 @@ const ServiceModel = require('../models/Service.model');
 // FIND ALL SERVICES 
 const findAllServices = async (req, res) => {
     try {
-        const services = await ServiceModel.find().populate('user_id');
+        const services = await ServiceModel.find({is_valid:true}).populate('user_id');
         res.send({
             success:true,
             message:'find all services !SUCCESS',
-            services: services
+            services: services,
+            total: services.length
         }) 
     } catch (error) {
         res.send({success: false, message:error})
@@ -17,7 +18,7 @@ const findAllServices = async (req, res) => {
 // FIND SERVICE BY ID 
 const findServiceById = async (req, res) => {
     try {
-        const service = await ServiceModel.findById({_id:req.params.id}).populate('user_id');
+        const service = await ServiceModel.findById({is_valid:true,_id:req.params.id}).populate('user_id');
         res.status(200).send({
             success: true,
             message: 'find service by id successFully',
@@ -33,7 +34,6 @@ const createService = async (req, res) => {
 
     const bodyService = new ServiceModel({
         user_id     : req.body.user_id,
-        title       : req.body.title,
         departure   : req.body.departure,
         destination : req.body.destination,
         address_dest: req.body.address_dest,
@@ -61,7 +61,6 @@ const updateService = async (req, res) => {
             {_id:req.params.id},
             {
                 $set:{
-                    title       : req.body.title,
                     departure   : req.body.departure,
                     destination : req.body.destination,
                     address_dest: req.body.address_dest,
