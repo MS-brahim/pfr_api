@@ -3,7 +3,8 @@ const ServiceModel = require('../models/Service.model');
 // FIND ALL SERVICES 
 const findAllServices = async (req, res) => {
     try {
-        const services = await ServiceModel.find({is_valid:true}).populate('user_id');
+        const services = await ServiceModel.find({is_valid:true}).populate('user_id')
+        .sort({createdAt:-1})
         res.send({
             success:true,
             message:'find all services !SUCCESS',
