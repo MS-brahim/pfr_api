@@ -38,8 +38,11 @@ const createService = async (req, res) => {
         departure   : req.body.departure,
         destination : req.body.destination,
         address_dest: req.body.address_dest,
+        address_depart: req.body.address_depart,
         date_depart : req.body.date_depart,
         date_dest   : req.body.date_dest,
+        image   : req.body.image,
+        weight   : req.body.weight,
     });
 
     try {
@@ -65,8 +68,11 @@ const updateService = async (req, res) => {
                     departure   : req.body.departure,
                     destination : req.body.destination,
                     address_dest: req.body.address_dest,
+                    address_depart: req.body.address_depart,
                     date_depart : req.body.date_depart,
                     date_dest   : req.body.date_dest,
+                    image       : req.body.image,
+                    weight      : req.body.weight,
                 },
             }
         );
