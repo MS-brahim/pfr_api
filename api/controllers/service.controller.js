@@ -3,16 +3,34 @@ const ServiceModel = require('../models/Service.model');
 // FIND ALL SERVICES 
 const findAllServices = async (req, res) => {
     try {
-        const services = await ServiceModel.find({is_valid:true}).populate('user_id')
-        .sort({createdAt:-1})
-        res.send({
-            success:true,
-            message:'find all services !SUCCESS',
-            services: services,
-            total: services.length
-        }) 
+        const q = {is_valid: req.query.q}
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+        const sort = {createdAt:req.query.sort};
+
+        ServiceModel.find(q).populate('user_id')
+        .sort(sort)
+        .skip((page-1) * limit) //Notice here
+        .limit(limit)
+        .exec((err, doc) => {
+            if (err) {
+              return res.send(err);
+            }
+            ServiceModel.countDocuments(q).exec((count_error, count) => {
+              if (err) {
+                return res.send(count_error);
+              }
+              return res.status(200).send({
+                total: count,
+                page: page,
+                sort: sort,
+                pageSize: doc.length,
+                services: doc
+              });
+            });
+        });
     } catch (error) {
-        res.send({success: false, message:error})
+        res.status(404).send({ message: error.message });
     }
 }
 
