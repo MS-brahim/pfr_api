@@ -22,6 +22,8 @@ const findAllServices = async (req, res) => {
               }
               return res.status(200).send({
                 total: count,
+                success: true,
+                message: "find all services !SUCCESS",
                 page: page,
                 sort: sort,
                 pageSize: doc.length,
