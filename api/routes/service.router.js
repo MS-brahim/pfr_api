@@ -11,7 +11,7 @@ router.route('/post').post(
 router.route('/:id').get(
     serviceController.findServiceById
 );
-router.route('/:ddeparture/:destination').get(
+router.route('/search/all/:from/:to').post(
     serviceController.searchByFromTo
 );
 router.route('/:id/update').patch(

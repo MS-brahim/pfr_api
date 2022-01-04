@@ -3,30 +3,64 @@ const ServiceModel = require('../models/Service.model');
 // SEARCH BY LCATION 
 const searchByFromTo = async (req, res)=> {
     try {
-        const q = {departure: req.query.departure, destination: req.query.destination }
-        ServiceModel.find(q).populate('user_id')
-        .exec((err, doc) => {
-            if (err) {
-              return res.send(err);
-            }
-            ServiceModel.countDocuments(q).exec((count_error, count) => {
-              if (err) {
-                return res.send(count_error);
-              }
-              return res.status(200).send({
-                total: count,
-                success: true,
-                message: "all results !SEARCH SUCCESS",
-                page: page,
-                sort: sort,
-                pageSize: doc.length,
-                services: doc
-              });
-            });
-        });
+        // var query = { $text: { $search : searchString } },  
+        // { score : { $meta: "textScore" } 
+        // } 
+        const results = await ServiceModel.find({
+            "$and":[
+                {"departure":{$regex:req.params.from}},
+                {"destination":{$regex:req.params.to}}
+            ],
+        })
+        if (results.length===1) {
+            res.send({
+                total:results.length,
+                success:true,
+                message: 'SUCCESS! '+  results.length + ' result',
+                results,
+            }) 
+        } else if(results.length>1) {
+            res.send({
+                total:results.length,
+                success:true,
+                message: 'SUCCESS! '+ results.length + ' results',
+                results,
+            }) 
+        } else {
+            res.send({
+                total:results.length,
+                success:true,
+                message: 'SUCCESS! '+ results.length + ' result',
+            }) 
+        }       
     } catch (error) {
-        res.json({success: false, message:error})
+        res.send({success: false, message:error})
     }
+    // try {
+    //     // const q = {departure: 'fes' }
+    //     const search = ServiceModel.find()
+    //     res.json({results:search})
+
+    //     // .exec((err, doc) => {
+    //     //     if (err) {
+    //     //       return res.send(err);
+    //     //     }
+    //     //     ServiceModel.countDocuments(q).exec((count_error, count) => {
+    //     //       if (err) {
+    //     //         return res.send(count_error);
+    //     //       }
+    //     //       return res.status(200).send({
+    //     //         total: count,
+    //     //         success: true,
+    //     //         message: "all results !SEARCH SUCCESS",
+    //     //         pageSize: doc.length,
+    //     //         services: doc
+    //     //       });
+    //     //     });
+    //     // });
+    // } catch (error) {
+    //     res.json({success: false, message:error})
+    // }
 }
 
 // FIND ALL SERVICES 
