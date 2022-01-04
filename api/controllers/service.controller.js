@@ -1,5 +1,34 @@
 const ServiceModel = require('../models/Service.model');
 
+// SEARCH BY LCATION 
+const searchByFromTo = async (req, res)=> {
+    try {
+        const q = {departure: req.query.departure, destination: req.query.destination }
+        ServiceModel.find(q).populate('user_id')
+        .exec((err, doc) => {
+            if (err) {
+              return res.send(err);
+            }
+            ServiceModel.countDocuments(q).exec((count_error, count) => {
+              if (err) {
+                return res.send(count_error);
+              }
+              return res.status(200).send({
+                total: count,
+                success: true,
+                message: "all results !SEARCH SUCCESS",
+                page: page,
+                sort: sort,
+                pageSize: doc.length,
+                services: doc
+              });
+            });
+        });
+    } catch (error) {
+        res.json({success: false, message:error})
+    }
+}
+
 // FIND ALL SERVICES 
 const findAllServices = async (req, res) => {
     try {
@@ -127,5 +156,6 @@ module.exports = {
     findServiceById,
     createService,
     updateService,
-    deleteService
+    deleteService,
+    searchByFromTo,
 }
