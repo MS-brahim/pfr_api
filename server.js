@@ -25,7 +25,7 @@ db.connect()
     .then(()=>{
         console.log("Connected to mongoDB success");
         server.listen(PORT, () => {
-            console.log('run server port:'+PORT);
+            console.log('run server port http://localhost:'+PORT);
         });
     });
 // db.close()
